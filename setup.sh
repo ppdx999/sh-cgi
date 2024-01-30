@@ -2,6 +2,7 @@
 
 chmod +x $(dirname "$0")/api/*
 chmod +x $(dirname "$0")/bin/*
+chmod +x $(dirname "$0")/public/*.sh
 
 source $(dirname "$0")/conf
 
