@@ -1,25 +1,28 @@
 #!/bin/sh
 
-app_name="sh-cgi"
-port=8080
+ROOT=$(dirname "$0" | xargs dirname)
+source $ROOT/conf
+
+APP="sh-cgi"
+PORT=8080
 
 echo "Stopping old container.." >&2
-docker stop $app_name
+docker stop $APP
 echo "done" >&2
 
 echo "Removing old container.." >&2
-docker rm $app_name
+docker rm $APP
 echo "done" >&2
 
 echo "Building new container.." >&2
-docker build -t $app_name .
+docker build -t $APP .
 echo "done" >&2
 
 echo "Running new container.." >&2
 docker run \
 	-d \
-	--name=$app_name \
-	-p $port:80 \
+	--name=$APP \
+	-p $PORT:80 \
 	-v $(pwd)/cgi-bin:/usr/local/apache2/cgi-bin \
-	$app_name
+	$APP
 echo "done" >&2

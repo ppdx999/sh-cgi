@@ -1,0 +1,2 @@
+APP=sh-cgi
+PORT=8080
