@@ -1,6 +1,5 @@
 #!/bin/sh
 
-chmod +x $(dirname "$0")/api/*
 chmod +x $(dirname "$0")/bin/*
 chmod +x $(dirname "$0")/public/*.sh
 
@@ -12,6 +11,10 @@ echo "done" >&2
 
 echo "Removing old container.." >&2
 docker rm $APP
+echo "done" >&2
+
+echo "Removing old image.." >&2
+docker rmi $APP
 echo "done" >&2
 
 echo "Building new container.." >&2
