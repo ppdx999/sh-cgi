@@ -1,0 +1,53 @@
+#! /bin/sh
+#
+# セッションの確認と更新
+#
+# このスクリプトは、セッションIDをCookieから読み取り、
+# そのセッションIDで指定されたセッションファイルが存在するか、
+# また、そのセッションファイルが有効期限内かを確認する。
+#
+# セッションIDが有効であれば、正常終了する。
+# セッションIDが無効であれば、エラー終了する。
+#
+
+# ===== ０.各種定義 ==================================================
+#
+Dir_SESSION='/usr/local/apache2/session'  # セッションファイル置き場
+SESSION_LIFETIME_MIN=30                        # セッションの有効期限(3分にしてみた)
+
+#
+# --- エラー終了関数定義 ---------------------------------------------
+error_exit () {
+	printf '%s\n' "$1" >&2
+	exit 1
+}
+
+mkdir -p "$Dir_SESSION" || error_exit 'cannot create session directory'
+
+# ===== １.セッションIDの取得とセッションファイルの操作  =============
+#
+# --- CookieからセッションIDを読み取る -------------------------------
+session_id=$(printf '%s' "${1:-}" | # 環境変数からCookie文字列取得
+             sed 's/&/%26/g'                | # CGI変数仕様に合せるため,"&"を"%26"に置換
+             sed 's/[;,[:blank:]]\{1,\}//g' | # Cookie変数の区切りを"&"に置換
+             cgi-name                       | # 1行1変数化及び%エンコードを解除(独自cmd)
+             grep '^session_id '            | # 変数名がsession_idの行を取り出す
+             sed 's/^[^ ]* //'              ) # 変数名を除去し、中身だけ取り出す
+#
+# --- セッションIDの有効性検査 ---------------------------------------
+#
+
+# --- セッションID文字列が正しい書式(英数字16文字とした)でないならNG
+if ! printf '%s' "$session_id" | grep '^[A-Za-z0-9]\{16\}$' >/dev/null; then
+	exit 1
+fi
+# --- セッションID文字列で指定されたファイルが存在しないならNG
+[ -f "$Dir_SESSION/$session_id" ] || exit 1
+# --- ファイルが存在しても古すぎだったらNG
+if ! find "$Dir_SESSION" -name "$session_id" -mmin +$SESSION_LIFETIME_MIN |
+		 awk 'END{if(NR>0){exit 1;}}'
+then
+	exit 1
+fi
+# --- これらの検査に全て合格したらOK
+exit 0
