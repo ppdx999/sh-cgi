@@ -26,7 +26,6 @@ docker run \
 	-d \
 	--name=$APP \
 	-p $PORT:80 \
-	-v $(pwd)/api:/usr/local/apache2/api \
 	-v $(pwd)/public:/usr/local/apache2/public \
 	$APP
 echo "done" >&2
