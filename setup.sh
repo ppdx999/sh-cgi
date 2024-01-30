@@ -1,6 +1,6 @@
 #!/bin/sh
 
-chmod +x $(dirname "$0")/cgi-bin/*
+chmod +x $(dirname "$0")/api/*
 chmod +x $(dirname "$0")/bin/*
 
 source $(dirname "$0")/conf
@@ -22,7 +22,7 @@ docker run \
 	-d \
 	--name=$APP \
 	-p $PORT:80 \
-	-v $(pwd)/cgi-bin:/usr/local/apache2/cgi-bin \
-	-v $(pwd)/htdocs:/usr/local/apache2/htdocs \
+	-v $(pwd)/api:/usr/local/apache2/api \
+	-v $(pwd)/public:/usr/local/apache2/public \
 	$APP
 echo "done" >&2
