@@ -1,5 +1,8 @@
 #!/bin/sh
 
+chmod +x $(dirname "$0")/cgi-bin/*
+chmod +x $(dirname "$0")/bin/*
+
 source $(dirname "$0")/conf
 
 echo "Stopping old container.." >&2
