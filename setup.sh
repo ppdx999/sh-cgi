@@ -20,5 +20,6 @@ docker run \
 	--name=$APP \
 	-p $PORT:80 \
 	-v $(pwd)/cgi-bin:/usr/local/apache2/cgi-bin \
+	-v $(pwd)/htdocs:/usr/local/apache2/htdocs \
 	$APP
 echo "done" >&2
