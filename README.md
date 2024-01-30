@@ -1,15 +1,12 @@
 # sh-cgi
 web server with cgi and shellscript
 
-# Development
-
-### setup server
+# development
 
 ```terminal
-$ bin/setup.sh
+$ setup.sh
 ```
 
 ```terminal
-$ curl localhost:8080/cgi-bin/hi.cgi
-Your sh server work well
+$ curl localhost:8080
 ```
