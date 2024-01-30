@@ -1,1 +1,24 @@
-<html><body><h1>It works!!!</h1></body></html>
+<html>
+	<head>
+		<title>It works!!!</title>
+		<script src="/libs/htmx.min.js"></script>
+	</head>
+  <body>
+    <h1>It works!!!</h1>
+		<div id="target">
+			<p>Click the button below to replace me with the button's response.</p>
+		</div>
+		<button hx-get="/data.html"
+			hx-trigger="click"
+			hx-target="#target"
+		>
+			Click Me!
+		</button>
+		<button hx-get="/cgi-bin/data.cgi"
+			hx-trigger="click"
+			hx-target="#target"
+		>
+			Click Me!
+		</button>
+  </body>
+</html>
