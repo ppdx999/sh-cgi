@@ -1,10 +1,6 @@
 #!/bin/sh
 
-ROOT=$(dirname "$0" | xargs dirname)
-source $ROOT/conf
-
-APP="sh-cgi"
-PORT=8080
+source $(dirname "$0")/conf
 
 echo "Stopping old container.." >&2
 docker stop $APP
